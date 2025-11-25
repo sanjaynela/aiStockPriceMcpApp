@@ -1,0 +1,17 @@
+{
+  "name": "ai-stock-price-app",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "mcp-server",
+    "web-app/server",
+    "web-app/client"
+  ],
+  "scripts": {
+    "test:e2e": "npx tsx scripts/e2e-test.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.7.1",
+    "typescript": "^5.3.3"
+  }
+}
