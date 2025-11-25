@@ -4,13 +4,36 @@
 
 This project demonstrates how to build a full-stack application using the **Model Context Protocol (MCP)** to connect an AI agent (simulated) to real-time data.
 
-## 🚀 Concepts
+## 🧠 Understanding MCP (Model Context Protocol)
 
-The core idea is to break out of the "Brain in a Jar" limitation of LLMs by giving them access to external tools via a standardized protocol.
+### The Problem: "Brain in a Jar"
+Large Language Models (LLMs) like Claude or GPT-4 are powerful, but they are isolated. They:
+-   Don't have access to your local files.
+-   Can't query private databases.
+-   **Can't fetch real-time data** (like stock prices).
 
--   **MCP Server**: A standalone service that exposes "tools" (capabilities) to any MCP-compliant client. In this case, it exposes a `get_stock_price` tool.
--   **MCP Client**: The entity that connects to the server and calls the tools. Here, our Backend acts as the client.
--   **Transport**: The communication channel. We use `StdioServerTransport`, meaning the Client spawns the Server as a subprocess and talks over standard input/output (stdin/stdout).
+Traditionally, connecting an LLM to data required writing custom "glue code" for every single integration.
+
+### The Solution: A Universal Standard
+**MCP** acts like a "USB port" for AI applications. It standardizes how AI models discover and use external tools.
+-   **MCP Server**: A lightweight program that says "Here are the tools I have" (e.g., `get_stock_price`).
+-   **MCP Client**: The application (like Claude Desktop or our Backend) that connects to the server and uses the tools.
+-   **Transport**: How they talk. We use `stdio` (Standard Input/Output), which is fast and secure for local processes.
+
+### 🔄 How It Works in This App
+
+1.  **User Request**: You type *"What is the price of AAPL?"* in the Frontend.
+2.  **Intent Detection**: The Backend receives the message. In a full AI app, an LLM would analyze this. Here, we use simple logic to detect the stock ticker.
+3.  **Tool Call (MCP)**:
+    -   The Backend (acting as **MCP Client**) sends a JSON-RPC request to the running **MCP Server** process.
+    -   Request: `call_tool("get_stock_price", { ticker: "AAPL" })`
+4.  **Execution**:
+    -   The **MCP Server** receives the request.
+    -   It uses `yahoo-finance2` to fetch the live price from the internet.
+    -   It returns the result: `"Price of AAPL: 278.57 USD"`.
+5.  **Response**: The Backend sends this data back to the Frontend to display.
+
+This architecture decouples the "Brain" (AI/Client) from the "Hands" (Tools/Server), making it easy to swap or add new capabilities without rewriting the core application.
 
 ## 🛠️ Technology Stack
 
