@@ -1,5 +1,7 @@
 # AI Stock Price App with MCP
 
+![App Screenshot](assets/screenshot.png)
+
 This project demonstrates how to build a full-stack application using the **Model Context Protocol (MCP)** to connect an AI agent (simulated) to real-time data.
 
 ## 🚀 Concepts
